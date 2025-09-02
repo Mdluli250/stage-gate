@@ -1,5 +1,6 @@
 import { listNotifications, markNotificationRead } from '@/app/actions/notification'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export default async function NotificationsPage({ searchParams }: { searchParams: { page?: string } }) {
   const page = Number(searchParams.page ?? '1')
@@ -26,6 +27,14 @@ export default async function NotificationsPage({ searchParams }: { searchParams
           </li>
         ))}
       </ul>
+      <div className="mt-4 flex items-center gap-2">
+        {page > 1 ? (
+          <Link className="text-blue-600 underline" href={`?page=${page - 1}`} aria-label="Previous page">Previous</Link>
+        ) : null}
+        {res.total > page * res.pageSize ? (
+          <Link className="text-blue-600 underline" href={`?page=${page + 1}`} aria-label="Next page">Next</Link>
+        ) : null}
+      </div>
     </main>
   )
 }

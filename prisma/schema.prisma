@@ -51,6 +51,9 @@ model User {
   messages      Message[]
   comments      Comment[]
   activityLogs  ActivityLog[]
+  reviews       Review[]  @relation("ReviewUser")
+  gatekeptGates Gate[]    @relation("GateGatekeeper")
+  uploadedDocs  Document[] @relation("DocumentUploadedBy")
 }
 
 model VerificationToken {
@@ -123,7 +126,7 @@ model Gate {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   stage         Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
-  gatekeeper    User?    @relation(fields: [gatekeeperId], references: [id])
+  gatekeeper    User?    @relation("GateGatekeeper", fields: [gatekeeperId], references: [id])
   reviews       Review[]
 }
 
@@ -144,7 +147,7 @@ model Review {
   createdAt DateTime @default(now())
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   gate      Gate     @relation(fields: [gateId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation("ReviewUser", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Message {
@@ -201,7 +204,7 @@ model Document {
   uploadedById  String
   uploadedAt    DateTime @default(now())
   project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  uploadedBy    User     @relation(fields: [uploadedById], references: [id])
+  uploadedBy    User     @relation("DocumentUploadedBy", fields: [uploadedById], references: [id])
 }
 
 model ActivityLog {

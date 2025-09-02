@@ -1,5 +1,6 @@
 import { getProject } from '@/app/actions/project'
 import { listMessages } from '@/app/actions/message'
+import { listComments } from '@/app/actions/comment'
 import { MessageForm } from '@/components/MessageForm'
 import { MessageList } from '@/components/MessageList'
 import { CommentForm } from '@/components/CommentForm'
@@ -16,7 +17,9 @@ export default async function ProjectPage({ params }: { params: { id: string } }
   if (!projectRes.ok) return <div className="p-6">Not found</div>
   const { project } = projectRes
   const messagesRes = await listMessages({ projectId: id, page: 1 })
+  const commentsRes = await listComments({ projectId: id, page: 1 })
   const initialMessages = messagesRes.ok ? messagesRes.items : []
+  const initialComments = commentsRes.ok ? commentsRes.items : []
 
   return (
     <main className="max-w-5xl mx-auto p-6 space-y-6">
@@ -30,7 +33,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
         <Card className="md:col-span-2">
           <CardHeader>Messages</CardHeader>
           <CardContent>
-            <MessageForm projectId={id} />
+            <MessageForm projectId={id} members={project.members.map((m) => m.user)} />
             <div className="mt-4">
               <MessageList projectId={id} initial={initialMessages as any} />
             </div>
@@ -53,7 +56,7 @@ export default async function ProjectPage({ params }: { params: { id: string } }
           <CardContent>
             <CommentForm projectId={id} />
             <div className="mt-4">
-              <CommentList projectId={id} initial={[]} />
+              <CommentList projectId={id} initial={initialComments as any} />
             </div>
           </CardContent>
         </Card>
