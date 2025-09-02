@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --chart-1: theme(colors.chart1);
+  --chart-2: theme(colors.chart2);
+  --chart-3: theme(colors.chart3);
+  --chart-4: theme(colors.chart4);
+  --chart-5: theme(colors.chart5);
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-gray-900 antialiased;
+}
+
+/* Accessible focus styles */
+*:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
