@@ -8,9 +8,7 @@ type AvatarProps = {
 }
 
 export function Avatar({ name, email, imageUrl, size = 32 }: AvatarProps) {
-  const hash = email ? new TextEncoder().encode(email.toLowerCase()) : undefined
-  const placeholder = `https://www.gravatar.com/avatar/${hash ? Array.from(hash).join('') : '000'}?d=identicon`
-  const src = imageUrl || placeholder
+  const src = imageUrl || (email ? `/api/user/photo?email=${encodeURIComponent(email)}` : `https://www.gravatar.com/avatar/000?d=identicon`)
   return (
     <div className="inline-flex items-center gap-2">
       <span className="relative inline-block rounded-full overflow-hidden" style={{ width: size, height: size }}>
